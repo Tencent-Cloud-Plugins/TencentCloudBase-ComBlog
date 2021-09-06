@@ -27,12 +27,19 @@
             "ADMIN_PASS": "{{env.ADMIN_PASS}}",
             "TCB_NOT_SHOW_CYNOS_DB": "${Outputs.comblog.Properties.InstanceId}"
           },
-          "initialDelaySeconds": 10
+          "initialDelaySeconds": 10,
+          "volumeMounts": {
+            "/app/storage": "comblog-cfs"
+          }
         }
       }
     },
     "requirement": {
       "addons": [
+        {
+          "type": "CFS",
+          "name": "comblog-cfs"
+        },
         {
           "type": "CynosDB",
           "name": "comblog",
