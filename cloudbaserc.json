@@ -1,0 +1,61 @@
+{
+  "version": "1.0",
+  "envId": "{{env.ENV_ID}}",
+  "framework": {
+    "name": "ComBlog",
+    "plugins": {
+      "client": {
+        "use": "@cloudbase/framework-plugin-container",
+        "inputs": {
+          "serviceName": "comblog",
+          "servicePath": "/",
+          "uploadType": "image",
+          "cpu": 1,
+          "mem": 2,
+          "imageInfo": {
+            "imageUrl": "ccr.ccs.tencentyun.com/tcbimages/comblog-tcb:1.0"
+          },
+          "containerPort": 80,
+          "envVariables": {
+            "DB_TYPE": "mysql",
+            "DB_HOST": "{{env.DB_IP}}",
+            "DB_NAME": "comblog",
+            "DB_PORT": "{{env.DB_PORT}}",
+            "DB_USER": "{{env.MYSQL_USERNAME}}",
+            "DB_PASS": "{{env.MYSQL_PASSWORD}}",
+            "ADMIN_NAME": "{{env.ADMIN_NAME}}",
+            "ADMIN_PASS": "{{env.ADMIN_PASS}}",
+            "TCB_NOT_SHOW_CYNOS_DB": "${Outputs.comblog.Properties.InstanceId}"
+          },
+          "initialDelaySeconds": 10
+        }
+      }
+    },
+    "requirement": {
+      "addons": [
+        {
+          "type": "CynosDB",
+          "name": "comblog",
+          "envMap": {
+            "IP": "DB_IP",
+            "PORT": "DB_PORT",
+            "USERNAME": "MYSQL_USERNAME",
+            "PASSWORD": "MYSQL_PASSWORD"
+          }
+        }
+      ],
+      "environment": {
+        "ADMIN_NAME": {
+          "description": "管理员用户名",
+          "required": true,
+          "default": "admin"
+        },
+        "ADMIN_PASS": {
+          "description": "管理员用户密码",
+          "required": true,
+          "default": "admin@123"
+        }
+      }
+    }
+  }
+}
